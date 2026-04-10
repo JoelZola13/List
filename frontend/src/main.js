@@ -7,6 +7,7 @@ import router from './router';
 import store from './store';
 import * as api from './api';
 import Utils from './utils';
+import defaultFaviconURL from './assets/favicon.png';
 
 // Internationalisation.
 Vue.use(VueI18n);
@@ -26,10 +27,36 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to) => {
   Vue.nextTick(() => {
-    const t = to.meta.title && i18n.te(to.meta.title) ? `${i18n.tc(to.meta.title, 0)} /` : '';
-    document.title = `${t} listmonk`;
+    setDocumentTitle(to);
   });
 });
+
+function getBrandName() {
+  const cfg = store.state.serverConfig || {};
+  return cfg.site_name || 'Communication App';
+}
+
+function setDocumentTitle(to) {
+  const t = to.meta.title && i18n.te(to.meta.title) ? `${i18n.tc(to.meta.title, 0)} / ` : '';
+  document.title = `${t}${getBrandName()}`;
+}
+
+function setFavicon() {
+  const cfg = store.state.serverConfig || {};
+  const faviconURL = cfg.favicon_url || defaultFaviconURL;
+  const existing = document.querySelector("link[rel='icon']");
+
+  if (existing) {
+    existing.href = faviconURL;
+    return;
+  }
+
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = 'image/png';
+  link.href = faviconURL;
+  document.head.appendChild(link);
+}
 
 async function initConfig(app) {
   // Load logged in user profile, server side config, and the language file before mounting the app.
@@ -77,10 +104,11 @@ async function initConfig(app) {
     return profile.listRole.lists.some((list) => list.id === id && list.permissions.includes(perm));
   };
 
+  setFavicon();
+
   // Set the page title after i18n has loaded.
   const to = router.history.current;
-  const title = to.meta.title ? `${i18n.tc(to.meta.title, 0)} /` : '';
-  document.title = `${title} listmonk`;
+  setDocumentTitle(to);
 
   if (app) {
     app.$mount('#app');

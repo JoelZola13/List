@@ -14,6 +14,9 @@ import (
 
 type serverConfig struct {
 	RootURL            string `json:"root_url"`
+	SiteName           string `json:"site_name"`
+	LogoURL            string `json:"logo_url"`
+	FaviconURL         string `json:"favicon_url"`
 	FromEmail          string `json:"from_email"`
 	PublicSubscription struct {
 		Enabled          bool        `json:"enabled"`
@@ -41,6 +44,9 @@ type serverConfig struct {
 func (a *App) GetServerConfig(c echo.Context) error {
 	out := serverConfig{
 		RootURL:       a.urlCfg.RootURL,
+		SiteName:      a.cfg.SiteName,
+		LogoURL:       a.urlCfg.LogoURL,
+		FaviconURL:    a.urlCfg.FaviconURL,
 		FromEmail:     a.cfg.FromEmail,
 		Lang:          a.cfg.Lang,
 		Permissions:   a.cfg.PermissionsRaw,

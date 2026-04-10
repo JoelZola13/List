@@ -8,6 +8,13 @@ listmonk is a standalone, self-hosted, newsletter and mailing list manager. It i
 
 Visit [listmonk.app](https://listmonk.app) for more info. Check out the [**live demo**](https://demo.listmonk.app).
 
+## Project Context
+
+This workspace uses the upstream listmonk codebase as the foundation for a broader communication app.
+
+- Start with [START_HERE.md](./START_HERE.md) for local setup.
+- See [PROJECT_BRIEF.md](./PROJECT_BRIEF.md) for the current product direction.
+
 ## Installation
 
 ### Docker

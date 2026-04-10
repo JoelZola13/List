@@ -4,9 +4,13 @@
       <template #brand>
         <div class="logo">
           <router-link :to="{ name: 'dashboard' }">
-            <img class="full" src="@/assets/logo.svg" alt="" />
-            <img class="favicon" src="@/assets/favicon.png" alt="" />
+            <img class="full" :src="brandLogo" :alt="siteName" />
+            <img class="favicon" :src="brandFavicon" :alt="siteName" />
           </router-link>
+          <div class="brand-copy">
+            <span class="brand-title">{{ siteName }}</span>
+            <span class="brand-tagline">Messaging command center</span>
+          </div>
         </div>
       </template>
       <template #end>
@@ -113,8 +117,9 @@
 import Vue from 'vue';
 import { mapState } from 'vuex';
 import { uris } from './constants';
-
 import Navigation from './components/Navigation.vue';
+import defaultLogoURL from './assets/logo.svg';
+import defaultFaviconURL from './assets/favicon.png';
 
 export default Vue.extend({
   name: 'App',
@@ -197,6 +202,18 @@ export default Vue.extend({
 
   computed: {
     ...mapState(['serverConfig', 'profile']),
+
+    siteName() {
+      return this.serverConfig.site_name || 'Communication App';
+    },
+
+    brandLogo() {
+      return this.serverConfig.logo_url || defaultLogoURL;
+    },
+
+    brandFavicon() {
+      return this.serverConfig.favicon_url || defaultFaviconURL;
+    },
 
     isGlobalNotices() {
       return (this.serverConfig.needs_restart
